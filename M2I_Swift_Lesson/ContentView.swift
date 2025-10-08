@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     private var user: User = User()
+    @State var isShown: Bool = false
     @StateObject private var counterModel: CounterModel = CounterModel()
     
     
@@ -25,11 +26,27 @@ struct ContentView: View {
                 Footer(counterModel: counterModel)
                 Button(action: {
                     print(counterModel.counter)
+                    isShown = true
                 }) {
                     Text("Invite & earn")
                         .padding()
                         .background(.yellow)
                         .cornerRadius(50)
+                }
+                .alert("Test", isPresented: $isShown) {
+                    Button("OK", role: .cancel) { }
+                    Button("Refuser", role: .destructive) { }
+
+//                    if #available(iOS 26.0, *) {
+//                        Button(role: .cancel, action: {isShown = false})
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
+//                    if #available(iOS 26.0, *) {
+//                        Button(role: .destructive, action: {isShown = false})
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
                 }
                 Spacer()
                 Spacer()
