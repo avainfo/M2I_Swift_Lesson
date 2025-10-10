@@ -34,10 +34,11 @@ struct TopBar : View {
             Counter(text: "Counter:", counter: counter)
             Spacer()
             Button(action: {
-                user.email = user.CapitalizeEmail();
-                user.password = user.CapitalizePassword();
-                print("\(user.email)")
-                print(counter)
+                Task {
+                    await getTodo()
+                    print("Donné récupéré")
+                }
+                print("test")
             }) {
                 Text("Invite & earn")
                     .padding()
@@ -47,5 +48,17 @@ struct TopBar : View {
             Spacer()
         }
         .frame(height: 75)
+    }
+    
+    func getTodo() async -> Void {
+        let url: URL = URL(string: "https://jsonplaceholder.typicode.com/todos/15")!
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let todo: Todo = try JSONDecoder().decode(Todo.self, from: data)
+            print(todo.title)
+        } catch {
+            print("Erreur sur la requete")
+        }
     }
 }
